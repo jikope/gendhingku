@@ -37,35 +37,35 @@ export default {
   name: "Home",
   metaInfo: {
     title: "Home",
-    titleTemplate: "%s | Gendhingku",
+    titleTemplate: "%s | Gendhingku"
   },
   components: {
-    Toast,
+    Toast
   },
   data() {
     return {
-      isLoggedIn: false,
+      isLoggedIn: false
     };
   },
   computed: {
     ...mapState({
-      auth: (state) => state.auth,
-    }),
+      auth: state => state.auth
+    })
   },
-  created: function () {
+  created: function() {
     let t = this;
-    this.$http.get("auth/isLoggedIn").then((res) => {
+    this.$http.get("auth/isLoggedIn").then(res => {
       t.isLoggedIn = res.data.isLoggedIn;
     });
   },
-  mounted: function () {
+  mounted: function() {
     this.$root.toast = this.$refs.myToast;
   },
   methods: {
-    logout: function () {
+    logout: function() {
       window.location.href = "/api/auth/logout";
-    },
-  },
+    }
+  }
 };
 </script>
 

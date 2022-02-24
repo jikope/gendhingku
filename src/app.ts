@@ -30,7 +30,6 @@ declare module "express-session" {
 
 app.use(
     cors({
-        origin: ["http://localhost:8080"],
         credentials: true,
         exposedHeaders: ["set-cookie"],
     })
