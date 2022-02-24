@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --dest ../public",
+    "build": "./node_modules/@vue/cli-service/bin/vue-cli-service.js build --dest ../public",
     "watch": "./node_modules/@vue/cli-service/bin/vue-cli-service.js build --dest ../public --watch",
     "lint": "vue-cli-service lint"
   },
