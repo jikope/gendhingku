@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/app.ts",
     "prod": "pm2-runtime build/app.js",
-    "heroku-postbuild": "tsc -p . && cd client && ls -la && npm i && npm run build",
+    "heroku-postbuild": "tsc -p . && cd client && npm i && ls -la && npm run build",
     "test": "jest"
   },
   "keywords": [],
