@@ -4,6 +4,7 @@ export const GOOGLE_CALLBACK_URI = process.env.GOOGLE_CALLBACK_URI;
 
 export const REDIS_PORT = parseInt(process.env.REDIS_PORT!);
 export const REDIS_HOST = process.env.REDIS_HOST;
+export const REDIS_SECRET = process.env.REDIS_SECRET;
 
 export const SESSION_SECRET = process.env.SESSION_SECRET;
 
