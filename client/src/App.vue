@@ -84,7 +84,7 @@ a {
 }
 
 .container {
-  margin-left: 15px;
+  //margin-left: 15px;
 }
 
 @media only screen and (max-width: 600px) {
