@@ -7,7 +7,7 @@
 export default {
   data: () => ({
     overlay: false,
-    zIndex: 203, // Dialog z-index is 202
+    zIndex: 203, // Dialog's z-index is 202
   }),
   methods: {
     show() {

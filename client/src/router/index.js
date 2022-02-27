@@ -24,9 +24,6 @@ const routes = [
     path: "/playlist/:playlistId",
     name: "Playlist",
     component: () => import("../views/Player.vue"),
-    meta: {
-      auth: true,
-    },
   },
   {
     path: "/about",

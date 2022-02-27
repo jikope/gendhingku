@@ -92,15 +92,6 @@ a {
   //margin-left: 15px;
 }
 
-@media only screen and (max-width: 600px) {
-  #left-side {
-    height: 10vh;
-  }
-
-  // #right-side {
-  // }
-}
-
 .video-container {
   position: relative;
   padding-bottom: 56.25%;

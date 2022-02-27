@@ -2,7 +2,7 @@
   <div class="container">
     <h1>Gendhingku</h1>
     <p>
-      Aplikasi ini saya buat karena kesulitan saya untuk memutar gendhing yang saya suka secara otomatsis. Suatu
+      Aplikasi ini saya buat karena kesulitan saya untuk memutar gendhing yang saya suka secara otomatis. Suatu
       pagelaran uyon-uyon atau wayang berdurasi 2 jam lebih, jika hanya ingin mendengarkan gendhing singkat maka harus
       dilakukan navigasi manual.
     </p>

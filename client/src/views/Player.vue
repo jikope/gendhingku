@@ -1,14 +1,14 @@
 <template>
   <v-container fluid>
     <v-row>
-      <v-col class="col-12 col-xs-12 col-sm-12 col-md-8" id="left-side" style="height: 100vh">
+      <v-col class="col-12 col-xs-12 col-sm-12 col-md-8" id="left-side">
         <div class="video-container">
           <!-- Youtube player -->
           <div id="player" allow="autoplay"></div>
         </div>
       </v-col>
       <!-- Right sidebar -->
-      <v-col class="col-12 col-xs-12 col-sm-12 col-md-4" id="right-side" style="height: 75vh">
+      <v-col class="col-12 col-xs-12 col-sm-12 col-md-4" id="right-side">
         <v-card class="py-0">
           <v-card-title class="py-5 text-xs-1 text-sm-3">{{ playlist.name }}</v-card-title>
           <v-card-subtitle style="padding-bottom: 0" v-if="playlist.createdBy"
@@ -160,7 +160,7 @@ export default {
       window.player.playVideo();
     },
     createTrack: function () {
-      let t = this;
+      /* let t = this; */
       var startSeconds = this.timestampToSecond(this.newTrack.startTime);
       var endSeconds = this.timestampToSecond(this.newTrack.endTime);
       var duration = endSeconds - startSeconds;
@@ -177,16 +177,20 @@ export default {
           duration: duration,
         })
         .then((res) => {
-          t.playlist.tracks.push(res.data.newTrack);
-          this.$root.loader.hide();
-          this.$root.toast.show({ message: "Track berhasil ditambahkan" });
-          t.dialog = false;
-          t.newTrack = {
-            name: null,
-            videoId: null,
-            startTime: "00:00:00",
-            endTime: "00:00:00",
-          };
+          if (this.playlist.tracks.length === 0) {
+            this.$router.go();
+          } else {
+            this.playlist.tracks.push(res.data.newTrack);
+            this.$root.loader.hide();
+            this.$root.toast.show({ message: "Track berhasil ditambahkan" });
+            this.dialog = false;
+            this.newTrack = {
+              name: null,
+              videoId: null,
+              startTime: "00:00:00",
+              endTime: "00:00:00",
+            };
+          }
         });
     },
     editTrack: function (item, index) {
@@ -385,5 +389,15 @@ export default {
   border: solid;
   border-width: 0 0 thin 0;
   border-color: rgba(0, 0, 0, 0.12);
+}
+
+#right-side {
+  height: 75vh;
+}
+
+@media only screen and (max-width: 600px) {
+  #right-side {
+    height: 50vh;
+  }
 }
 </style>
