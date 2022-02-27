@@ -166,6 +166,8 @@ export default {
       var duration = endSeconds - startSeconds;
       var videoId = this.youtubeVideoIdParser(this.newTrack.videoId);
 
+      this.$root.loader.show();
+
       this.$http
         .post("playlist/" + this.$route.params.playlistId + "/track/store", {
           name: this.newTrack.name,
@@ -176,6 +178,8 @@ export default {
         })
         .then((res) => {
           t.playlist.tracks.push(res.data.newTrack);
+          this.$root.loader.hide();
+          this.$root.toast.show({ message: "Track berhasil ditambahkan" });
           t.dialog = false;
           t.newTrack = {
             name: null,
@@ -282,7 +286,12 @@ export default {
         this.playlist.tracks.forEach((t) => {
           trackSequence.push(t._id);
         });
-        this.$http.patch("/playlist/" + this.playlist._id + "/updateSequence", { trackSequence: trackSequence });
+        this.$root.loader.show();
+        this.$http
+          .patch("/playlist/" + this.playlist._id + "/updateSequence", { trackSequence: trackSequence })
+          .then(() => {
+            this.$root.loader.hide();
+          });
       }
       this.isEditingSequence = !this.isEditingSequence;
     },

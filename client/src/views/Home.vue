@@ -107,9 +107,12 @@ export default {
   methods: {
     createPlaylist: function () {
       let t = this;
+      this.$root.loader.show();
       this.$http.post("playlist/store", { name: this.newPlaylist.name }).then((res) => {
         t.newPlaylist.name = null;
         t.myPlaylist.push(res.data.playlist);
+        this.$root.loader.hide();
+        this.$root.toast.show({ message: "Playlist berhasil ditambahkan" });
       });
       this.dialog = false;
     },
@@ -126,8 +129,8 @@ export default {
           1
         );
 
-        this.$http.delete("playlist/" + props + "/delete").then((res) => {
-          console.log(res);
+        this.$http.delete("playlist/" + props + "/delete").then(() => {
+          this.$root.toast.show({ message: "Playlist berhasil dihapus" });
         });
       }
     },
@@ -137,10 +140,11 @@ export default {
       this.newPlaylist = playlist;
     },
     updatePlaylist: function () {
-      console.log(this.newPlaylist.name);
+      this.$root.loader.show();
       this.$http.patch("/playlist/" + this.newPlaylist._id + "/update", this.newPlaylist).then(() => {
         this.dialog = false;
         this.isEditingPlaylist = false;
+        this.$root.loader.hide();
         this.$root.toast.show({ message: "Playlist berhasil di-edit" });
       });
     },

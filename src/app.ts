@@ -19,8 +19,8 @@ import { Logger } from "./Logger";
 import initDB from "./mongo";
 
 const PORT: number = parseInt(process.env.PORT!) || 3000;
-const logger = new Logger();
 const app: Application = express();
+const logger = new Logger();
 
 declare module "express-session" {
     interface SessionData {

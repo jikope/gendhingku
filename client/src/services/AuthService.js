@@ -1,6 +1,0 @@
-
-class AuthService {
-    login(credentials) {
-
-    }
-}

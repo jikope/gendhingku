@@ -8,7 +8,7 @@
 export default {
   name: "About",
   metaInfo: {
-    title: "About Page",
-  },
+    title: "About Page"
+  }
 };
 </script>
