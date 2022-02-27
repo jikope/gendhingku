@@ -1,5 +1,5 @@
 <template>
-  <v-overlay :value="overlay">
+  <v-overlay :value="overlay" :z-index="zIndex">
     <v-progress-circular indeterminate size="64"></v-progress-circular>
   </v-overlay>
 </template>
@@ -7,6 +7,7 @@
 export default {
   data: () => ({
     overlay: false,
+    zIndex: 203, // Dialog z-index is 202
   }),
   methods: {
     show() {

@@ -25,6 +25,7 @@
     <v-main>
       <router-view />
     </v-main>
+
     <Toast ref="myToast" />
     <Loader ref="myLoader" />
   </v-app>
