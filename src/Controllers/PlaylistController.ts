@@ -73,7 +73,7 @@ export default class PlaylistController extends Controller {
      * Update playlist sequence
      */
     public static async updateSequence(req: Request, res: Response, next: NextFunction) {
-        if(await PlaylistService.updatePlaylistSequence(req.params.playlistId, req.body.trackSequence)){
+        if(await PlaylistService.updatePlaylistSequence(req.session.user!._id, req.params.playlistId, req.body.trackSequence)){
             return res.sendStatus(200);
         }
     }

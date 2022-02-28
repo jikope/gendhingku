@@ -18,7 +18,7 @@
             <v-btn icon v-model="playerOptions.random" @click="playerOptions.random = !playerOptions.random">
               <v-icon>mdi-shuffle-variant</v-icon>
             </v-btn>
-            <v-btn icon @click="action('edit')" v-if="!isEditingSequence">
+            <v-btn icon @click="action('edit')" v-if="!isEditingSequence && myPlaylist">
               <v-icon>mdi-drag-variant</v-icon>
             </v-btn>
             <v-btn icon @click="action('done')" v-if="isEditingSequence">
@@ -29,7 +29,7 @@
             </v-btn>
             <div>
               <!-- Add track dialog -->
-              <v-dialog v-model="dialog" max-width="500">
+              <v-dialog v-model="dialog" max-width="500" v-if="myPlaylist">
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn plain outlined v-bind="attrs" v-on="on">Tambah Track</v-btn>
                 </template>
@@ -94,10 +94,10 @@
                     <v-list-item-action>
                       <v-list-item-action-text v-text="secondToTimestamp(item.duration)"></v-list-item-action-text>
                       <v-list-item-action-text class="text-weight-medium">
-                        <v-btn icon @click.stop="editTrack(item, index)">
+                        <v-btn icon @click.stop="editTrack(item, index)" v-if="myPlaylist">
                           <v-icon>mdi-pencil</v-icon>
                         </v-btn>
-                        <v-btn icon @click.stop="deleteTrack(item, index)">
+                        <v-btn icon @click.stop="deleteTrack(item, index)" v-if="myPlaylist">
                           <v-icon>mdi-delete</v-icon>
                         </v-btn>
                       </v-list-item-action-text>
@@ -141,6 +141,8 @@ export default {
       random: false,
     },
     playlist: {},
+    me: null,
+    myPlaylist: false,
   }),
 
   metaInfo() {
@@ -319,6 +321,11 @@ export default {
       };
     },
   },
+  created: function () {
+    this.$http.get("auth/me").then((res) => {
+      this.me = res.data.me;
+    });
+  },
 
   mounted: function () {
     const initYoutube = (vm) => {
@@ -369,6 +376,9 @@ export default {
     this.$http.get("playlist/" + playlistId).then((res) => {
       t.playlist = res.data.playlist;
       t.title = t.playlist.name;
+      if (t.playlist.createdBy._id == t.me.id) {
+        t.myPlaylist = true;
+      }
 
       var tag = document.createElement("script");
       tag.src = "https://www.youtube.com/iframe_api";

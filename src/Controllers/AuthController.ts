@@ -87,11 +87,14 @@ export default class AuthController extends Controller {
      * Get user profile
      */
     public static async me(req: Request, res: Response) {
-        if (req.session.user) {
-            const user: IUser | null = await User.findById(req.session.user);
-            await user?.save();
-        }
-        return res.send({ me: req.session.user });
+        // if (req.session.user) {
+        //     const user: IUser | null = await User.findById(req.session.user);
+        //     await user?.save();
+        // }
+        return res.send({ me: {
+            'id': req.session.user!._id,
+            'name': req.session.user!.name
+        } });
     }
 
     /**

@@ -74,10 +74,16 @@ export default class TrackController extends Controller {
     }
 
     public static async remove(req: Request, res: Response) {
-        let { trackId } = req.params;
+        let { trackId, playlistId } = req.params;
 
-        if (!trackId) {
-            return super.handleError(res, 400, "Track id must be provided");
+        const playlist: IPlaylist | null = await PlaylistService.getPlaylistById(playlistId);
+
+        if (!trackId || !playlist) {
+            return super.handleError(res, 400, "Not Found");
+        }
+
+        if (!playlist.createdBy._id.equals(req.session.user!._id)) {
+            return super.handleError(res, 403, "Forbidden");
         }
 
         await TrackService.deleteTrack(trackId).then((deleted) => {

@@ -77,9 +77,10 @@ namespace PlaylistService {
         return playlist;
     }
 
-    export async function updatePlaylistSequence(playlistId: Types.ObjectId | string, trackSequence: Array<Types.ObjectId>): Promise<boolean> {
+    export async function updatePlaylistSequence(userId:Types.ObjectId | string, playlistId: Types.ObjectId | string, trackSequence: Array<Types.ObjectId>): Promise<boolean> {
         const playlist: IPlaylist | null = await Playlist.findById(playlistId);
         if (!playlist) return false;
+        if (!playlist.createdBy._id.equals(userId)) return false;
 
         playlist.tracks = trackSequence;
         await playlist.save();
@@ -116,8 +117,12 @@ namespace PlaylistService {
      * @param playlistId - Playlist's ObjectId
      * @returns Promise<boolean>
      */
-    export function deletePlaylist(playlistId: Types.ObjectId | string, userID: Types.ObjectId | string): Promise<boolean> {
-        return new Promise<boolean>((resolve, reject) => {
+    export function deletePlaylist(playlistId: Types.ObjectId | string, userId: Types.ObjectId | string): Promise<boolean> {
+        return new Promise<boolean>(async (resolve, reject) => {
+            const playlist: IPlaylist | null = await getPlaylistById(playlistId);
+            if (playlist === null) reject(false);
+            if (!playlist!.createdBy._id.equals(userId)) reject(false);
+            
             Playlist.deleteOne({ _id: playlistId }, (err) => {
                 if (err) {
                     logger.error(err);
