@@ -376,8 +376,10 @@ export default {
     this.$http.get("playlist/" + playlistId).then((res) => {
       t.playlist = res.data.playlist;
       t.title = t.playlist.name;
-      if (t.playlist.createdBy._id == t.me.id) {
-        t.myPlaylist = true;
+      if (t.me) {
+        if (t.playlist.createdBy._id == t.me.id) {
+          t.myPlaylist = true;
+        }
       }
 
       var tag = document.createElement("script");
