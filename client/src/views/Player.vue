@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container fluid id="player-container">
     <v-row>
       <v-col class="col-12 col-xs-12 col-sm-12 col-md-8" id="left-side">
         <div class="video-container">
@@ -67,7 +67,7 @@
                           name: null,
                           videoId: null,
                           startTime: '00:00:00',
-                          endTime: '00:00:00',
+                          endTime: '00:00:00'
                         };
                       "
                       >Batal</v-btn
@@ -135,33 +135,33 @@ export default {
       name: null,
       videoId: null,
       startTime: "00:00:00",
-      endTime: "00:00:00",
+      endTime: "00:00:00"
     },
     playerOptions: {
-      random: false,
+      random: false
     },
     playlist: {},
     me: null,
-    isMyPlaylist: false,
+    isMyPlaylist: false
   }),
 
   metaInfo() {
     return {
-      title: this.title,
+      title: this.title
     };
   },
 
   methods: {
-    loadVideoById: function (item) {
+    loadVideoById: function(item) {
       window.player.loadVideoById({
         videoId: item.videoId,
         startSeconds: item.startTime,
-        endSeconds: item.endTime,
+        endSeconds: item.endTime
       });
 
       window.player.playVideo();
     },
-    createTrack: function () {
+    createTrack: function() {
       /* let t = this; */
       var startSeconds = this.timestampToSecond(this.newTrack.startTime);
       var endSeconds = this.timestampToSecond(this.newTrack.endTime);
@@ -176,9 +176,9 @@ export default {
           videoId: videoId,
           startTime: startSeconds,
           endTime: endSeconds,
-          duration: duration,
+          duration: duration
         })
-        .then((res) => {
+        .then(res => {
           if (this.playlist.tracks.length === 0) {
             this.$router.go();
           } else {
@@ -190,12 +190,12 @@ export default {
               name: null,
               videoId: null,
               startTime: "00:00:00",
-              endTime: "00:00:00",
+              endTime: "00:00:00"
             };
           }
         });
     },
-    editTrack: function (item, index) {
+    editTrack: function(item, index) {
       this.dialog = true;
       this.isEditingTrack = true;
       this.indexEdited = index;
@@ -205,10 +205,10 @@ export default {
         name: item.name,
         videoId: item.videoId,
         startTime: this.secondToTimestamp(item.startTime),
-        endTime: this.secondToTimestamp(item.endTime),
+        endTime: this.secondToTimestamp(item.endTime)
       };
     },
-    updateTrack: function () {
+    updateTrack: function() {
       let t = this;
       var startSeconds = this.timestampToSecond(this.newTrack.startTime);
       var endSeconds = this.timestampToSecond(this.newTrack.endTime);
@@ -223,9 +223,9 @@ export default {
           videoId: videoId,
           startTime: startSeconds,
           endTime: endSeconds,
-          duration: duration,
+          duration: duration
         })
-        .then((res) => {
+        .then(res => {
           this.$root.toast.show({ message: "Track berhasil di-edit" });
           t.playlist.tracks[t.indexEdited] = res.data.track;
           t.newTrack = {
@@ -233,13 +233,13 @@ export default {
             name: null,
             videoId: null,
             startTime: "00:00:00",
-            endTime: "00:00:00",
+            endTime: "00:00:00"
           };
         });
       this.dialog = false;
       this.isEditingTrack = false;
     },
-    deleteTrack: async function (track, index) {
+    deleteTrack: async function(track, index) {
       if (await this.$refs.confirm.open("Hapus track", "Apakah anda yakin ingin menghapus track ini?")) {
         this.playlist.tracks.splice(index, 1);
         this.$http
@@ -247,13 +247,13 @@ export default {
           .then(() => this.$root.toast.show({ message: "Track berhasil dihapus" }));
       }
     },
-    timestampToSecond: function (timestamp) {
+    timestampToSecond: function(timestamp) {
       let seconds = 0;
       const timestamp_split = timestamp.split(":");
       seconds = parseInt(timestamp_split[0]) * 3600 + parseInt(timestamp_split[1]) * 60 + parseInt(timestamp_split[2]);
       return seconds;
     },
-    secondToTimestamp: function (sec) {
+    secondToTimestamp: function(sec) {
       if (!sec) return "";
       let hour,
         minute,
@@ -277,7 +277,7 @@ export default {
       [hour, minute, second].forEach((number, index) => {
         let formattedNumber = number.toLocaleString("en-US", {
           minimumIntegerDigits: 2,
-          useGrouping: false,
+          useGrouping: false
         });
         timestamp = index != 2 ? timestamp + formattedNumber + ":" : timestamp + formattedNumber;
       });
@@ -289,7 +289,7 @@ export default {
       if (e === "undo") this.playlist.tracks = this.before;
       if (e === "done") {
         const trackSequence = [];
-        this.playlist.tracks.forEach((t) => {
+        this.playlist.tracks.forEach(t => {
           trackSequence.push(t._id);
         });
         this.$root.loader.show();
@@ -301,34 +301,34 @@ export default {
       }
       this.isEditingSequence = !this.isEditingSequence;
     },
-    getRandomIntInclusive: function () {
+    getRandomIntInclusive: function() {
       const min = Math.ceil(0);
       const max = Math.floor(this.playlist.tracks.length - 1);
 
       return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
     },
-    youtubeVideoIdParser: function (url) {
+    youtubeVideoIdParser: function(url) {
       var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
       var match = url.match(regExp);
       return match && match[7].length == 11 ? match[7] : false;
-    },
+    }
   },
 
   computed: {
     options() {
       return {
-        disabled: !this.isEditingSequence,
+        disabled: !this.isEditingSequence
       };
-    },
+    }
   },
-  created: function () {
-    this.$http.get("auth/me").then((res) => {
+  created: function() {
+    this.$http.get("auth/me").then(res => {
       this.me = res.data.me;
     });
   },
 
-  mounted: function () {
-    const initYoutube = (vm) => {
+  mounted: function() {
+    const initYoutube = vm => {
       let item = vm.playlist.tracks[vm.selectedItem];
 
       window.player = new window.YT.Player("player", {
@@ -337,12 +337,12 @@ export default {
           start: item.startTime,
           end: item.endTime,
           controls: 1,
-          playsinline: 1,
+          playsinline: 1
         },
         events: {
           onReady: onPlayerReady,
-          onStateChange: onPlayerStateChange,
-        },
+          onStateChange: onPlayerStateChange
+        }
       });
 
       function loadVideo() {
@@ -373,11 +373,11 @@ export default {
     var t = this;
     var playlistId = this.$route.params.playlistId;
 
-    this.$http.get("playlist/" + playlistId).then((res) => {
+    this.$http.get("playlist/" + playlistId).then(res => {
       t.playlist = res.data.playlist;
       t.title = t.playlist.name;
       if (t.me) {
-        if (t.playlist.createdBy._id == t.me.id) {
+        if (t.playlist.createdBy._id === t.me.id) {
           t.isMyPlaylist = true;
         }
       }
@@ -392,11 +392,15 @@ export default {
         initYoutube(this);
       };
     });
-  },
+  }
 };
 </script>
 
-<style>
+<style scope>
+html, body {
+  overflow-y: hidden !important;
+}
+
 .v-list-item {
   border: solid;
   border-width: 0 0 thin 0;

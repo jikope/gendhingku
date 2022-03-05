@@ -4,13 +4,13 @@
       <!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
       <v-toolbar-title>
         <v-btn depressed>
-          <router-link to="/">HOME</router-link>
+          <a href="/">HOME</a>
         </v-btn>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <!-- <v-btn depressed @click="$router.push({name:'MyPlaylist'})"> -->
       <v-btn depressed>
-        <router-link to="/playlist"> <v-icon>mdi-playlist-music</v-icon>Playlistku </router-link>
+        <a href="/playlist"> <v-icon>mdi-playlist-music</v-icon>Playlistku </a>
       </v-btn>
       <v-btn depressed link>
         <div v-if="isLoggedIn" @click="logout">Logout</div>
@@ -80,16 +80,11 @@ $text-color: #222222;
 html,
 body {
   overflow-x: hidden;
-  overflow-y: hidden !important;
 }
 
 a {
   color: $text-color !important;
   text-decoration: none;
-}
-
-.container {
-  //margin-left: 15px;
 }
 
 .video-container {
