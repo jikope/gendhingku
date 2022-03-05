@@ -18,7 +18,7 @@
             <v-btn icon v-model="playerOptions.random" @click="playerOptions.random = !playerOptions.random">
               <v-icon>mdi-shuffle-variant</v-icon>
             </v-btn>
-            <v-btn icon @click="action('edit')" v-if="!isEditingSequence && myPlaylist">
+            <v-btn icon @click="action('edit')" v-if="!isEditingSequence && isMyPlaylist">
               <v-icon>mdi-drag-variant</v-icon>
             </v-btn>
             <v-btn icon @click="action('done')" v-if="isEditingSequence">
@@ -29,7 +29,7 @@
             </v-btn>
             <div>
               <!-- Add track dialog -->
-              <v-dialog v-model="dialog" max-width="500" v-if="myPlaylist">
+              <v-dialog v-model="dialog" max-width="500" v-if="isMyPlaylist">
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn plain outlined v-bind="attrs" v-on="on">Tambah Track</v-btn>
                 </template>
@@ -94,10 +94,10 @@
                     <v-list-item-action>
                       <v-list-item-action-text v-text="secondToTimestamp(item.duration)"></v-list-item-action-text>
                       <v-list-item-action-text class="text-weight-medium">
-                        <v-btn icon @click.stop="editTrack(item, index)" v-if="myPlaylist">
+                        <v-btn icon @click.stop="editTrack(item, index)" v-if="isMyPlaylist">
                           <v-icon>mdi-pencil</v-icon>
                         </v-btn>
-                        <v-btn icon @click.stop="deleteTrack(item, index)" v-if="myPlaylist">
+                        <v-btn icon @click.stop="deleteTrack(item, index)" v-if="isMyPlaylist">
                           <v-icon>mdi-delete</v-icon>
                         </v-btn>
                       </v-list-item-action-text>
@@ -142,7 +142,7 @@ export default {
     },
     playlist: {},
     me: null,
-    myPlaylist: false,
+    isMyPlaylist: false,
   }),
 
   metaInfo() {
@@ -378,7 +378,7 @@ export default {
       t.title = t.playlist.name;
       if (t.me) {
         if (t.playlist.createdBy._id == t.me.id) {
-          t.myPlaylist = true;
+          t.isMyPlaylist = true;
         }
       }
 

@@ -41,13 +41,9 @@
       </v-row>
       <v-data-table :headers="headers" :items="myPlaylist" :items-per-page="5" class="elevation-1">
         <template v-slot:[`item.name`]="props">
-          <!-- <div class="row-pointer" @click="handleTableClick(props.item._id)">{{ props.item.name }}</div> -->
           <a class="row-pointer" :href="'/playlist/' + props.item._id">{{ props.item.name }}</a>
         </template>
         <template v-slot:[`item.createdAt`]="props">
-          <!-- <div class="row-pointer" @click="handleTableClick(props.item._id)">
-            {{ //formatDate(new Date(props.item.createdAt)) }}
-          </div> -->
           <a class="row-pointer" :href="'/playlist/' + props.item._id">{{
             formatDate(new Date(props.item.createdAt))
           }}</a>
@@ -72,7 +68,7 @@ import ConfirmDialog from "../components/ConfirmDialog";
 export default {
   name: "Home",
   metaInfo: {
-    title: "Playlist ku",
+    title: "Playlist ku"
   },
 
   components: { ConfirmDialog },
@@ -85,30 +81,30 @@ export default {
       myPlaylist: [],
       newPlaylist: {
         _id: null,
-        name: null,
+        name: null
       },
       headers: [
         { text: "Nama Playlist", value: "name" },
         { text: "Dibuat pada", value: "createdAt" },
-        { text: "Action", value: "controls", sortable: false },
-      ],
+        { text: "Action", value: "controls", sortable: false }
+      ]
     };
   },
-  created: function () {
+  created: function() {
     let t = this;
-    this.$http.get("auth/me").then((res) => {
+    this.$http.get("auth/me").then(res => {
       t.me = res.data.me;
     });
 
-    this.$http.get("playlist/me").then((res) => {
+    this.$http.get("playlist/me").then(res => {
       t.myPlaylist = res.data.myPlaylists;
     });
   },
   methods: {
-    createPlaylist: function () {
+    createPlaylist: function() {
       let t = this;
       this.$root.loader.show();
-      this.$http.post("playlist/store", { name: this.newPlaylist.name }).then((res) => {
+      this.$http.post("playlist/store", { name: this.newPlaylist.name }).then(res => {
         t.newPlaylist.name = null;
         t.myPlaylist.push(res.data.playlist);
         this.$root.loader.hide();
@@ -119,13 +115,13 @@ export default {
     handleTableClick(value) {
       this.$router.push({
         name: "Playlist",
-        params: { playlistId: value },
+        params: { playlistId: value }
       });
     },
-    onDeteleButtonClick: async function (props) {
+    onDeteleButtonClick: async function(props) {
       if (await this.$refs.confirm.open("Hapus playlist", "Apakah anda yakin ingin menghapus playlist ini?")) {
         this.myPlaylist.splice(
-          this.myPlaylist.findIndex((p) => p._id === props),
+          this.myPlaylist.findIndex(p => p._id === props),
           1
         );
 
@@ -134,12 +130,12 @@ export default {
         });
       }
     },
-    onEditButtonClick: function (playlist) {
+    onEditButtonClick: function(playlist) {
       this.dialog = true;
       this.isEditingPlaylist = true;
       this.newPlaylist = playlist;
     },
-    updatePlaylist: function () {
+    updatePlaylist: function() {
       this.$root.loader.show();
       this.$http.patch("/playlist/" + this.newPlaylist._id + "/update", this.newPlaylist).then(() => {
         this.dialog = false;
@@ -148,13 +144,13 @@ export default {
         this.$root.toast.show({ message: "Playlist berhasil di-edit" });
       });
     },
-    formatDate: function (date) {
+    formatDate: function(date) {
       var hours = date.getHours();
       var minutes = date.getMinutes();
       var strTime = hours + ":" + minutes;
       return date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear() + "  " + strTime;
-    },
-  },
+    }
+  }
 };
 </script>
 
