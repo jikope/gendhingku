@@ -52,10 +52,6 @@
               Repository:
               <a href="https://github.com/jikope/gendhingku" target="_blank">https://github.com/jikope/gendhingku</a>
             </li>
-            <li>
-              <v-icon>mdi-email-outline</v-icon> E-mail :
-              <b><a href="mailto:bimakope@gmail.com">bimakope@gmail.com</a></b>
-            </li>
           </ul>
         </div>
       </v-col>
