@@ -2,12 +2,12 @@
   "name": "gendhingku-server",
   "version": "1.0.0",
   "description": "Backend for Gendhingku",
-  "main": "app.ts",
   "scripts": {
     "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/app.ts",
     "prod": "pm2-runtime build/app.js",
     "heroku-postbuild": "tsc -p . && cd client && npm i && npm run build",
-    "test": "jest"
+    "test": "jest",
+    "start": "npm run heroku-postbuild && npm run prod"
   },
   "keywords": [],
   "author": "Bima Jikope",
