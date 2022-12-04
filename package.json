@@ -7,7 +7,8 @@
     "prod": "pm2-runtime build/app.js",
     "heroku-postbuild": "tsc -p . && cd client && npm i && npm run build",
     "test": "jest",
-    "start": "npm run heroku-postbuild && npm run prod"
+    "build": "tsc -p . && cd client && npm i && npm run build",
+      "start": "npm run prod"
   },
   "keywords": [],
   "author": "Bima Jikope",
@@ -23,7 +24,8 @@
     "express-session": "^1.17.2",
     "googleapis": "^87.0.0",
     "mongoose": "^6.0.7",
-    "redis": "^3.1.2"
+    "redis": "^3.1.2",
+    "typescript": "^4.4.3"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
@@ -43,6 +45,5 @@
     "nodemon": "^2.0.13",
     "ts-jest": "^27.0.5",
     "ts-node": "^10.2.1",
-    "typescript": "^4.4.3"
   }
 }
