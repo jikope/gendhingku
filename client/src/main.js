@@ -6,8 +6,7 @@ import router from "./router";
 import store from "./store";
 
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = process.env.NODE_ENV === 'production' ? "https://gendhing-bimakope.xyz/api/" : "http://localhost:3000/api/";
-// axios.defaults.baseURL = "http://localhost:3000/api/";
+axios.defaults.baseURL = "https://gendhing-bimakope.xyz/api/";
 
 Vue.config.productionTip = false;
 Vue.prototype.$http = axios;
