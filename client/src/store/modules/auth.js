@@ -1,10 +1,10 @@
 const state = () => ({
-  user: null
+  isLoggedIn: false
 });
 
 const mutations = {
-  setUser(state, user) {
-    state.user = user;
+  setIsLoggedIn(state, isLoggedIn) {
+    state.isLoggedIn = isLoggedIn;
   }
 };
 

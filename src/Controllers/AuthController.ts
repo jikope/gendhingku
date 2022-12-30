@@ -1,96 +1,69 @@
 // Packages import
 import axios from "axios";
 import { Types } from "mongoose";
-import { google } from "googleapis";
 import { Request, Response } from "express";
 
 // Local import
-import { Logger } from '../Logger'
 import Controller from "./Controller";
-import { IUser, User } from "../Models/User";
-import { GOOGLE_CALLBACK_URI, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from "../config";
+import AuthService from "../Services/AuthService"
+import UserService, { createUserPayload } from "../Services/UserService"
 
-const logger = new Logger("AuthController");
+import { IUser } from "../Models/User";
 
 export default class AuthController extends Controller {
     private static FRONTEND_URL = "/";
-    /**
-     * Generate user login and consent screen to user
-     */
-    public static getGoogleAuthURI(req: Request, res: Response) {
-        const oauth2Client = new google.auth.OAuth2(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_CALLBACK_URI);
-
-        const scopes = [
-            "https://www.googleapis.com/auth/userinfo.profile",
-            "https://www.googleapis.com/auth/userinfo.email",
-        ];
-
-        const authURL = oauth2Client.generateAuthUrl({
-            access_type: "offline",
-            prompt: "consent",
-            scope: scopes,
-        });
-
-        return res.redirect(authURL);
-    }
-
-    /**
-     * Get user's info after getting consent from user
-     */
-    public static async handleGoogleSignIn(req: Request, res: Response) {
-        const code = req.query.code as string;
-        if (!code) {
-            return res.sendStatus(401);
-        }
-
-        const oauth2Client = new google.auth.OAuth2(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_CALLBACK_URI);
-
-        try {
-            const { tokens } = await oauth2Client.getToken(code);
-
-            const googleUser = await axios
-                .get(`https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${tokens.access_token}`, {
-                    headers: {
-                        Authorization: `Bearer ${tokens.id_token}`,
-                    },
-                })
-                .then((res) => res.data)
-                .catch((error) => {
-                    logger.error("err");
-                    throw new Error(error.message);
-                });
-
-            let user: IUser | null = await User.findOne({ email: googleUser.email }).exec();
-            if (!user) {
-                user = await User.create({
-                    _id: new Types.ObjectId(),
-                    name: googleUser.name,
-                    email: googleUser.email,
-                    googleId: googleUser.id,
-                    username: googleUser.given_name,
-                    playlists: []
-                });
-
-                await user.save();
-            }
-
-            req.session.user = user;
-
-            return res.redirect(AuthController.FRONTEND_URL);
-        } catch (e) {
-            logger.error(e);
-            return res.sendStatus(401);
-        }
-    }
-
     /**
      * Get user profile
      */
     public static async me(req: Request, res: Response) {
         return res.send({ me: {
-            'id': req.session.user!._id,
-            'name': req.session.user!.name
+            'id': req.session.user!._id
         } });
+    }
+
+    /**
+     * Register. Create session
+     */
+    public static async register(req: Request, res: Response) {
+        let { username, password } = req.body;
+        if (!username || !password) { return super.handleError(res, 400, "Empty inputs"); }
+
+        const payload: createUserPayload = {
+            username: username,
+            password: password,
+        };
+
+        const user = await UserService.createUser(payload);
+
+        if (!user) {
+            return super.handleError(res, 400, "Username already exists.");
+        }
+
+        return res.status(200).send({ status: "success", message: { username: user.username }});
+    }
+
+    /**
+     * Logout. Create user's session
+     */
+    public static async login(req: Request, res: Response) {
+        let { username, password } = req.body;
+
+        if (!username || !password) { return super.handleError(res, 400, "Empty inputs"); }
+
+        const check = await AuthService.login(username, password); 
+
+        if (!check) { return super.handleError(res, 401, "Email or Password don't match."); };
+
+        const user = await UserService.getUser(username);
+        if (!user) { return super.handleError(res, 500, "Internal Error"); }
+        req.session.user = user;
+
+        return res.status(200).send({
+            status: "success",
+            message: {
+                user: user
+            },
+        });
     }
 
     /**
@@ -99,7 +72,7 @@ export default class AuthController extends Controller {
     public static logout(req: Request, res: Response) {
         req.session.destroy((err) => {
             if (err) {
-                logger.error(err);
+                console.error(err);
             } else {
                 return res.redirect(AuthController.FRONTEND_URL);
             }

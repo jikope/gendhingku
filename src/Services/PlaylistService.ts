@@ -22,7 +22,7 @@ namespace PlaylistService {
     }
 
     /**
-     * @param user - Instance of IUser
+     * @param user - Object ID of IUser
      * @returns Array<IPlaylist> | null
      */
     export async function getMyPlaylists(userId: Types.ObjectId): Promise<Array<IPlaylist> | null> {

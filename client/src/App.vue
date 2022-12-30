@@ -13,16 +13,17 @@
         <a href="/playlist"> <v-icon>mdi-playlist-music</v-icon>Playlistku </a>
       </v-btn>
       <v-btn depressed link>
-        <div v-if="isLoggedIn" @click="logout">Logout</div>
-        <div v-else>
-          <a href="/api/auth/google/url">Login</a>
+        <div ref="authBtn" v-if="isLoggedIn" @click="logout">Logout</div>
+        <div ref="authBtn" v-else @click="login">
+          <!-- <a href="/login">Login</a> -->
+          Login 
         </div>
       </v-btn>
     </v-app-bar>
     <!---------------------------------------------------------------------
 	MAIN CONTENT
     --------------------------------------------------------------------->
-    <v-main>
+    <v-main v-if="isMounted">
       <router-view />
     </v-main>
 
@@ -48,7 +49,8 @@ export default {
   },
   data() {
     return {
-      isLoggedIn: false
+      isLoggedIn: false,
+      isMounted: false,
     };
   },
   computed: {
@@ -56,17 +58,24 @@ export default {
       auth: state => state.auth
     })
   },
-  created: function() {
+  created: async function() {
     let t = this;
-    this.$http.get("auth/isLoggedIn").then(res => {
+    await this.$http.get("auth/isLoggedIn").then(res => {
       t.isLoggedIn = res.data.isLoggedIn;
+    }).catch(() => {
+        console.log("Not logged in. ");
     });
   },
   mounted: function() {
     this.$root.toast = this.$refs.myToast;
     this.$root.loader = this.$refs.myLoader;
+    this.$root.authBtn = this.$refs.authBtn;
+    this.isMounted = true;
   },
   methods: {
+    login: function() {
+      window.location.href = "/login";
+    },
     logout: function() {
       window.location.href = "/api/auth/logout";
     }

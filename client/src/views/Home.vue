@@ -92,9 +92,6 @@ export default {
   },
   created: function() {
     let t = this;
-    this.$http.get("auth/me").then(res => {
-      t.me = res.data.me;
-    });
 
     this.$http.get("playlist/me").then(res => {
       t.myPlaylist = res.data.myPlaylists;
@@ -109,6 +106,8 @@ export default {
         t.myPlaylist.push(res.data.playlist);
         this.$root.loader.hide();
         this.$root.toast.show({ message: "Playlist berhasil ditambahkan" });
+      }).catch((err) => {
+        console.log("Unable to add new playlist. " + err);
       });
       this.dialog = false;
     },
@@ -142,6 +141,8 @@ export default {
         this.isEditingPlaylist = false;
         this.$root.loader.hide();
         this.$root.toast.show({ message: "Playlist berhasil di-edit" });
+      }).catch(err => {
+        console.log("Unable to edit playlist. " + err);
       });
     },
     formatDate: function(date) {
