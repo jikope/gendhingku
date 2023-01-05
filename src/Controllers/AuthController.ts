@@ -46,11 +46,14 @@ export default class AuthController extends Controller {
      * Logout. Create user's session
      */
     public static async login(req: Request, res: Response) {
+
         let { username, password } = req.body;
 
         if (!username || !password) { return super.handleError(res, 400, "Empty inputs"); }
 
-        const check = await AuthService.login(username, password); 
+        const check = await AuthService.login(username, password).catch((err) => {
+            return false;
+        }); 
 
         if (!check) { return super.handleError(res, 401, "Email or Password don't match."); };
 

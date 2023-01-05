@@ -44,6 +44,8 @@ describe("Auth Service test cases", () => {
     it("Login ", async () => {
         const checkLogin = await AuthService.login("kampret_username", "kampret");
         expect(checkLogin).toBeTruthy();
+        const checkLoginFalse = await AuthService.login("kampret_username", "kampret");
+        expect(checkLoginFalse).toBeFalsy();
     });
 
     it("delete", async () => {
