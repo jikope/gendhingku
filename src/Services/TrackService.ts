@@ -30,7 +30,7 @@ namespace TrackService {
             endTime: data.endTime,
             duration: data.duration,
         }).catch((err) => {
-            console.log(err);
+            logger.error(err);
         });
 
         if (!newTrack) return null;
@@ -75,7 +75,7 @@ namespace TrackService {
         return new Promise<boolean>((resolve, reject) => {
             Track.deleteOne({ _id: trackId }, (err) => {
                 if (err) {
-                    console.log(err);
+                    logger.error(err);
                     reject(false);
                 }
                 resolve(true);

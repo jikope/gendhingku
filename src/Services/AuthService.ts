@@ -7,18 +7,17 @@ import UserService from "./UserService";
 const logger = new Logger("AuthService");
 
 namespace AuthService {
-    export function login(username: string, password: string) : Promise<boolean> {
-        return new Promise<boolean>(async (resolve, reject) => {
-            const user: IUser | null = await User.findOne({
-                username: username 
-            }).select("+password");
+    export async function login(username: string, password: string) : Promise<boolean> {
+        const user: IUser | null = await User.findOne({
+            username: username 
+        }).select("+password");
 
-            if (!user) { reject(false); return; }
+        if (!user) { return false; }
 
-            const check = await bcrypt.compare(password, user.password!);
-            if (!check) { reject(false); return; }
-            resolve(true);
-        })
+        const check = await bcrypt.compare(password, user.password!);
+        if (!check) { return false; }
+
+        return true;
     }
 }
 

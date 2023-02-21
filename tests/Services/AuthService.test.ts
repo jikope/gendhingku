@@ -11,7 +11,7 @@ describe("Auth Service test cases", () => {
     let user: IUser | null;
 
     beforeAll(async () => {
-        await mongoose.connect("mongodb://127.0.0.1:27017/gendhingku");
+        await mongoose.connect("mongodb://127.0.0.1:27017/gendhingku-test");
     });
 
     afterAll(async () => {
@@ -44,7 +44,10 @@ describe("Auth Service test cases", () => {
     it("Login ", async () => {
         const checkLogin = await AuthService.login("kampret_username", "kampret");
         expect(checkLogin).toBeTruthy();
-        const checkLoginFalse = await AuthService.login("kampret_username", "kampret");
+    });
+
+    it("Not login", async () => {
+        const checkLoginFalse = await AuthService.login("kampret_username", "Kampret");
         expect(checkLoginFalse).toBeFalsy();
     });
 
