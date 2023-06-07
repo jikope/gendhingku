@@ -1,0 +1,6 @@
+
+* Gendhingku
+Web app to play [[https://www.gendhing-bimakope.xyz/playlist/6217656ad50eb4c1a15f8427][my playlist]]
+
+Built with: typescript, express, mongoose, vue, youtube embed API
+
