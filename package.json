@@ -6,8 +6,8 @@
         "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/app.ts",
         "prod": "pm2-runtime build/app.js",
         "test": "jest",
-        "build-server": "tsc -p tsconfig-build.json && rm -rf node_modules && npm i --omit=dev",
-        "build-client": "cd client && npm i && npm run build && rm -rf node_modules && npm i --omit=dev",
+        "build-server": "NODE_ENV=development npm i && NODE_ENV=production tsc -p tsconfig-build.json && rm -rf node_modules && npm i --omit=dev",
+        "build-client": "cd client && NODE_ENV=development npm i && NODE_ENV=production npm run build && rm -rf node_modules && npm i --omit=dev",
         "build": "npm run build-server && npm run build-client",
         "start": "node build/app.js"
     },
