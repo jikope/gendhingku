@@ -8,7 +8,7 @@
         </div>
       </v-col>
       <!-- Right sidebar -->
-      <v-col class="col-12 col-xs-12 col-sm-12 col-md-4 mx-0" id="right-side">
+      <v-col class="col-12 col-xs-12 col-sm-12 col-md-4" id="right-side">
         <v-card class="py-0">
           <v-card-title class="py-5 text-xs-1 text-sm-3">{{ playlist.name }}</v-card-title>
           <v-card-subtitle style="padding-bottom: 0" v-if="playlist.createdBy"
@@ -33,7 +33,6 @@
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn plain outlined v-bind="attrs" v-on="on">Tambah Track</v-btn>
                 </template>
-                <!-- Track Form -->
                 <v-card>
                   <v-card-title class="text-h5">{{ isEditingTrack ? "Edit" : "Tambah" }} Track</v-card-title>
                   <v-card-text>
@@ -120,7 +119,7 @@ import draggable from "vuedraggable";
 import ConfirmDialog from "../components/ConfirmDialog";
 
 export default {
-  name: "Player",
+  name: "App",
   components: { draggable, ConfirmDialog },
 
   data: () => ({
@@ -346,7 +345,6 @@ export default {
         }
       });
 
-
       function loadVideo() {
         // TO avoid executing this event twice
         window.player.seekTo(0);
@@ -386,7 +384,6 @@ export default {
 
       var tag = document.createElement("script");
       tag.src = "https://www.youtube.com/iframe_api";
-      tag.id = "iframe_embed";
 
       var firstScriptTag = document.getElementsByTagName("script")[0];
       firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
@@ -402,15 +399,6 @@ export default {
 <style scope>
 html, body {
   overflow-y: hidden !important;
-  margin: 0;
-  padding: 0;
-}
-#player-container, #left-side, #right-side {
-    margin-left: 0;
-    margin-right: 0;
-    padding-top: 0;
-    padding-left: 0;
-    padding-right: 0;
 }
 
 .v-list-item {
