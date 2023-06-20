@@ -11,7 +11,7 @@
 
         <h2>Fitur</h2>
         <ol>
-          <li>Login dengan akun google</li>
+          <li>Login & Register <s>dengan akun google</s></li>
           <li>Membuat playlist dengan waktu mulai dan waktu selesai</li>
           <li>Edit, hapus playlist atau track</li>
         </ol>
@@ -19,7 +19,7 @@
         <h2>Cara menggunakan aplikasi ini</h2>
         <ol>
           <li>
-            Sebelum menggunakan aplikasi ini anda diharuskan untuk login terlebih dahulu menggunakan akun google anda.
+            Sebelum menggunakan aplikasi ini anda diharuskan untuk login terlebih dahulu <s>menggunakan akun google anda</s>.
           </li>
           <li>Jika sudah login maka click tombol navigasi <b>'PLAYLISTKU'</b> pada bar diatas.</li>
           <li>Tambahkan playlist dengan meng-click tombol <b>'BUAT PLAYLIST'</b></li>
