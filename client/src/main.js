@@ -6,7 +6,8 @@ import router from "./router";
 import vuetify from "./plugins/vuetify";
 
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = "https://www.gendhing-bimakope.xyz/api/";
+// axios.defaults.baseURL = "https://www.gendhing-bimakope.xyz/api/";
+axios.defaults.baseURL = "https://gendhingku.cyclic.app/api/";
 
 Vue.config.productionTip = false;
 Vue.prototype.$http = axios;

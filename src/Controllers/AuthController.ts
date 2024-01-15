@@ -43,7 +43,7 @@ export default class AuthController extends Controller {
     }
 
     /**
-     * Logout. Create user's session
+     * Login. Create user's session
      */
     public static async login(req: Request, res: Response) {
 
